@@ -88,7 +88,6 @@ class Selector extends React.PureComponent {
   };
 
   handleClose = event => {
-    console.log(this.state.recordTypes);
     this.setState({ open: false });
   };
 
