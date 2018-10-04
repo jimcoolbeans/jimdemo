@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { RECORD_TYPES_BY_ID } from './constants';
+import { RECORD_TYPES_BY_ID } from '../constants';
 
 const styles = theme => ({
   root: {
@@ -27,7 +26,7 @@ const styles = theme => ({
   },
   loadingWrapper: {
     position: 'absolute',
-    background: 'rgba(255,255,255,.4)',
+    background: 'rgba(128,128,128,.4)',
     top: '0px',
     bottom: '0px',
     width: '100%',
@@ -36,7 +35,7 @@ const styles = theme => ({
   },
 });
 
-function DnsTable(props) {
+const DnsTable = (props) => {
   const { classes, loading, records } = props;
 
   return (
