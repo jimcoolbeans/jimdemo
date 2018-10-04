@@ -67,24 +67,13 @@ class Selector extends React.PureComponent {
     lookup: '',
   };
 
-  setLoading = bool => {
-    this.setState({ loading: bool });
-  };
-
-  setError = e => {
-    this.setState({
-      error: e,
-    });
-  };
-
-  onDNSFetched = ({ getDNS }) => {
-    this.setState({ records: getDNS, loading: false });
-  };
-
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
+    if (event.target.value.length === 0) {
+      this.props.onDNSFetched([], false);
+    }
   };
 
   handleClose = event => {
@@ -112,7 +101,7 @@ class Selector extends React.PureComponent {
               onChange={this.handleChange('lookup')}
               margin="normal"
               className={classes.textField}
-              helperText="Enter a valid domain"
+              helperText="Enter a domain name"
             />
             <FormControl required className={classes.formControl}>
               <InputLabel htmlFor="select-multiple-checkbox">Record Types</InputLabel>
@@ -148,7 +137,7 @@ class Selector extends React.PureComponent {
                     variables: { lookup, recordTypes },
                   });
 
-                  onDNSFetched(data);
+                  onDNSFetched(data.getDNS, true);
                 } catch (e) {
                   setError(e.message);
                   setLoading(false);

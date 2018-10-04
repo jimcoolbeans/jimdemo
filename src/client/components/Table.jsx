@@ -36,7 +36,9 @@ const styles = theme => ({
 });
 
 const DnsTable = (props) => {
-  const { classes, loading, records } = props;
+  const {
+    classes, loading, records, hasQuery,
+  } = props;
 
   return (
     <React.Fragment>
@@ -64,7 +66,7 @@ const DnsTable = (props) => {
               ))
             ) : (
               <TableRow>
-                <TableCell>{ ' ' }</TableCell>
+                <TableCell colSpan={2}>{hasQuery ? 'No Results For Query' : ' '}</TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -79,6 +81,6 @@ const DnsTable = (props) => {
       </Paper>
     </React.Fragment>
   );
-}
+};
 
 export default withStyles(styles)(DnsTable);

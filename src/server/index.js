@@ -23,9 +23,12 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     getDNS: (root, { lookup, recordTypes }, context, info) => Promise.all(
-      recordTypes.map(rr => axios.get(`${API_URL_ROOT}?name=${lookup}&type=${rr}`)
-        .then(({ data }) => data))
-        .catch((e) => { console.log(e); }),
+      recordTypes.map(rr => axios
+        .get(`${API_URL_ROOT}?name=${lookup}&type=${rr}`)
+        .then(({ data }) => data)
+        .catch((e) => {
+          console.log(e);
+        })),
     )
       .then(data => data.reduce((accum, curr) => {
         if (curr.Answer) {
@@ -35,21 +38,18 @@ const resolvers = {
         }
         return accum;
       }, []))
-      .catch((e) => { console.log(e); }),
+      .catch((e) => {
+        console.log(e);
+      }),
   },
 };
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
 
 const app = express();
 
 // serve our statics
 app.use('/static', express.static(path.join(__dirname, '../../build')));
 
-// setup the logger
+// setup the logger (incomplete)
 app.use(
   logger('combined', {
     stream: fs.createWriteStream(path.join(__dirname, '../../access.log'), { flags: 'a' }),
@@ -59,6 +59,12 @@ app.use(
 // index html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
+});
+
+// setup apollo middleware
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
 server.applyMiddleware({ app });

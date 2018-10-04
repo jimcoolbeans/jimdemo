@@ -9,35 +9,32 @@ import Selector from './components/Selector';
 const styles = () => ({
   root: {
     padding: '20px',
-  }
+  },
 });
 
 class App extends React.PureComponent {
   state = {
     records: [],
     loading: false,
+    hasQuery: false,
   };
 
   setLoading = bool => {
     this.setState({ loading: bool });
-  }
+  };
 
   setError = e => {
     this.setState({
       error: e,
     });
-  }
+  };
 
-  onDNSFetched = ({ getDNS }) => {
-    this.setState({ records: getDNS, loading: false, });
+  onDNSFetched = (records, hasQuery) => {
+    this.setState({ records, hasQuery, loading: false });
   };
 
   render() {
-    const { 
-      loading,
-      records, 
-      error,
-    } = this.state;
+    const { loading, records, error, hasQuery } = this.state;
 
     const { classes } = this.props;
 
@@ -50,16 +47,13 @@ class App extends React.PureComponent {
             setError={this.setError}
             onDNSFetched={this.onDNSFetched}
           />
-          {error &&
+          {error && (
             <Grid item xs={12}>
-              <div>{ error }</div>
+              <div>{error}</div>
             </Grid>
-          }
+          )}
           <Grid item xs={12}>
-            <Table 
-              records={records}
-              loading={loading}
-            />
+            <Table records={records} loading={loading} hasQuery={hasQuery} />
           </Grid>
         </Grid>
       </div>
