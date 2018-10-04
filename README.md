@@ -1,5 +1,5 @@
 # Requirements
-node & npm
+node & npm latest stable
 
 # Setup
 For launching the first time run `npm run setup`;
