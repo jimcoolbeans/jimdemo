@@ -5,18 +5,25 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-const API_URL_ROOT = 'https://dns.google.com/resolve';
+const { API_URL_ROOT, RECORD_TYPES, RECORD_TYPES_BY_ID } = require('./constants');
 
 const typeDefs = gql`
   type Record {
     name: String
     type: Int
+    typeName: String
     TTL: Int
     data: String
   }
 
+  type RecordType {
+    type: String
+    id: Int
+  }
+
   type Query {
     getDNS(lookup: String!, recordTypes: [String!]!): [Record]
+    getRecordTypes: [RecordType]
   }
 `;
 
@@ -33,7 +40,11 @@ const resolvers = {
       .then(data => data.reduce((accum, curr) => {
         if (curr.Answer) {
           curr.Answer.forEach((value) => {
-            accum.push(value);
+            accum.push(
+              Object.assign(value, {
+                typeName: RECORD_TYPES_BY_ID[value.type],
+              }),
+            );
           });
         }
         return accum;
@@ -41,6 +52,7 @@ const resolvers = {
       .catch((e) => {
         console.log(e);
       }),
+    getRecordTypes: () => RECORD_TYPES,
   },
 };
 

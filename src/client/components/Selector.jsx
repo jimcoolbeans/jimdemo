@@ -14,8 +14,6 @@ import { withStyles } from '@material-ui/core/styles';
 import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
 
-import { RECORD_TYPES } from '../constants';
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 
@@ -33,6 +31,7 @@ const GET_DNS = gql`
     getDNS(lookup: $lookup, recordTypes: $recordTypes) {
       name
       type
+      typeName
       TTL
       data
     }
@@ -87,7 +86,7 @@ class Selector extends React.PureComponent {
   render() {
     const { recordTypes, open, lookup } = this.state;
 
-    const { setLoading, setError, onDNSFetched, classes } = this.props;
+    const { recordTypesList, setLoading, setError, onDNSFetched, classes } = this.props;
 
     return (
       <ApolloConsumer>
@@ -116,7 +115,7 @@ class Selector extends React.PureComponent {
                 renderValue={selected => selected.join(', ')}
                 MenuProps={MenuProps}
               >
-                {RECORD_TYPES.map(({ type }) => (
+                {recordTypesList.map(({ type }) => (
                   <MenuItem key={type} value={type}>
                     <Checkbox checked={recordTypes.indexOf(type) > -1} />
                     <ListItemText primary={type} />

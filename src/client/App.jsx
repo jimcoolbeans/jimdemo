@@ -2,6 +2,8 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 import Table from './components/Table';
 import Selector from './components/Selector';
@@ -11,6 +13,15 @@ const styles = () => ({
     padding: '20px',
   },
 });
+
+const GET_RECORDS = gql`
+  query getRecords {
+    getRecordTypes {
+      type
+      id
+    }
+  }
+`;
 
 class App extends React.PureComponent {
   state = {
@@ -42,11 +53,22 @@ class App extends React.PureComponent {
       <div className={classes.root}>
         <CssBaseline />
         <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={15}>
-          <Selector
-            setLoading={this.setLoading}
-            setError={this.setError}
-            onDNSFetched={this.onDNSFetched}
-          />
+          <Query query={GET_RECORDS}>
+            {({ loading, error, data }) => {
+              return (<div>
+                {!loading &&
+                  data &&
+                  !error && (
+                    <Selector
+                      setLoading={this.setLoading}
+                      setError={this.setError}
+                      onDNSFetched={this.onDNSFetched}
+                      recordTypesList={data.getRecordTypes}
+                    />
+                  )}
+              </div>);
+            }}
+          </Query>
           {error && (
             <Grid item xs={12}>
               <div>{error}</div>

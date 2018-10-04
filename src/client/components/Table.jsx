@@ -8,8 +8,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { RECORD_TYPES_BY_ID } from '../constants';
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -58,7 +56,7 @@ const DnsTable = (props) => {
               records.map(row => (
                 <TableRow>
                   <TableCell>{row.name}</TableCell>
-                  <TableCell>{RECORD_TYPES_BY_ID[row.type]}</TableCell>
+                  <TableCell>{row.typeName}</TableCell>
                   <TableCell>{row.type}</TableCell>
                   <TableCell>{row.TTL}</TableCell>
                   <TableCell>{row.data}</TableCell>

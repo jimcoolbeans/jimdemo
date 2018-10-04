@@ -1,4 +1,4 @@
-export const RECORD_TYPES = [
+const RECORD_TYPES = [
   { type: 'A', id: 1 },
   { type: 'AAAA', id: 28 },
   { type: 'CAA', id: 257 },
@@ -27,5 +27,13 @@ export const RECORD_TYPES = [
   { type: 'WKS', id: 11 },
 ];
 
-export const RECORD_TYPES_BY_ID = RECORD_TYPES
+const RECORD_TYPES_BY_ID = RECORD_TYPES
   .reduce((types, record) => Object.assign(types, { [record.id]: record.type }), {});
+
+const API_URL_ROOT = 'https://dns.google.com/resolve';
+
+module.exports = {
+  API_URL_ROOT,
+  RECORD_TYPES,
+  RECORD_TYPES_BY_ID,
+};
